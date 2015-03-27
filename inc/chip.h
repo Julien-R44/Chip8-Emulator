@@ -71,4 +71,9 @@ typedef struct		s_opcode
 // ----- Prototypes
 void				init_all(t_win *win, t_cpu *cpu, t_opcode *op);
 
+// instructions1.c
+void				i_00E0_clear(t_win *win);
+void				i_1NNN_jump(t_cpu *cpu);
+void				i_3XNN_jmp(t_cpu *cpu, Uint8 x, Uint8 a2, Uint8 a3);
+
 #endif

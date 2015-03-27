@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/26 23:14:59 by jripoute          #+#    #+#             */
-/*   Updated: 2015/03/27 03:13:01 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:55:01 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,32 +61,8 @@ int		exit_hook(SDL_Event event)
 	return (0);
 }
 
-void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
-{
-	Uint8	a1, a2, a3;
-	Uint8	act;
-	Uint16	opcode;
-
-	opcode = get_opcode(cpu);
-	act = get_action(op, opcode);
-	a1 = ((opcode & 0x0F00) >> 8);
-	a2 = ((opcode & 0x00F0) >> 4);
-	a3 = ((opcode & 0x000F));
-
-	if (act == 0)
-		;
-	if (act == 1)
-		; // 00E0
-	if (act == 3)
-		;
-	if (act == 23)
-		draw_sprite_xyn(cpu, win, a1, a2, a3);
-
-	cpu->mem_ptr += 2;
-}
-
 // L'opcode DXYN dessine un sprite en pos. X Y et de hauteur N
-void	draw_sprite_xyn(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h)
+void	i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h)
 {
 	Uint8	i = 0, j = 0, px = 0, py = 0, dec = 7;
 	Uint8	lign;
@@ -103,7 +79,7 @@ void	draw_sprite_xyn(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h)
 			{
 				if (win->pixel[px][py].color == WHITE)
 				{
-					pixel[px][py].color = BLACK;
+					win->pixel[px][py].color = BLACK;
 					cpu->v[0xF] = 1;
 				}
 				else
@@ -118,6 +94,36 @@ void	draw_sprite_xyn(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h)
 	}
 }
 
+void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
+{
+	Uint8	a1, a2, a3;
+	Uint8	act;
+	Uint16	opcode;
+
+	opcode = get_opcode(cpu);
+	act = get_action(op, opcode);
+	a3 = ((opcode & 0x0F00) >> 8);
+	a2 = ((opcode & 0x00F0) >> 4);
+	a1 = ((opcode & 0x000F));
+
+	if (act == 0)
+		;
+	if (act == 1)
+		i_00E0_clear(win);
+	if (act == 2)
+		; // 1NNN
+	if (act == 3)
+		; // 2NNN
+	if (act == 4)
+		; // 00EE
+	if (act == 5)
+		i_3XNN_jmp(cpu, a3, a2, a1);
+	if (act == 23)
+		i_DXYN_draw(cpu, win, a1, a2, a3);
+	cpu->mem_ptr += 2;
+}
+
+
 void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
 {
 	int			skip;
@@ -126,7 +132,7 @@ void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
 	skip = FALSE;
 	while (skip == FALSE)
 	{
-		interpret_opcode(cpu, op);
+		interpret_opcode(cpu, op, win);
 		// SDL_WaitEvent(&event);
 		// skip = exit_hook(event);
 		// display_screen(win);
@@ -140,8 +146,9 @@ void 	display_binary(unsigned int n)
 	int i;
 
 	printf("%d\t : ", n);
-	for(i = 7; i >=0; i--)
+	for(i = 16; i >=0; i--)
 		printf("%d", (n >> i ) & 1);
+	printf("\n");
 }
 
 int		main(int ac, char **av)
@@ -150,8 +157,26 @@ int		main(int ac, char **av)
 	t_win		win;
 	t_opcode	op;
 
-	init_all(&win, &cpu, &op);
-	hook(&win, &cpu, &op);
-	exit_all(&win);
+	Uint16 test = 0xF142;
+
+	Uint8 a1, a2, a3;
+
+	a3 = ((test & 0x0F00) >> 8);
+	a2 = ((test & 0x00F0) >> 4);
+	a1 = ((test & 0x000F));
+
+	Uint8 a4;
+
+	display_binary(test);
+
+	display_binary(a3);
+	display_binary(a2);
+	display_binary(a1);
+
+	// i_1NNN_jump
+
+	// init_all(&win, &cpu, &op);
+	// hook(&win, &cpu, &op);
+	// exit_all(&win);
 	return (0);
 }
