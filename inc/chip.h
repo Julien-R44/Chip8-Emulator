@@ -17,6 +17,9 @@ typedef enum	s_bool
 	TRUE,
 }				t_bool;
 
+# define CPU_SPEED	4
+# define FPS		16
+
 # define MEM_SIZE	4096
 # define MEM_START	512
 
@@ -57,7 +60,15 @@ typedef struct		s_win
 	SDL_Surface		*pix[2];
 }					t_win;
 
+# define NB_OPCODE	35
+
+typedef struct		s_opcode
+{
+	Uint16			mask[NB_OPCODE];
+	Uint16			id[NB_OPCODE];
+}					t_opcode;
+
 // ----- Prototypes
-void				init_all(t_win *win, t_cpu *cpu);
+void				init_all(t_win *win, t_cpu *cpu, t_opcode *op);
 
 #endif

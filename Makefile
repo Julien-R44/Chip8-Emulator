@@ -8,7 +8,7 @@ endif
 LDFLAGS	= -I./inc/
 LFLAGS	= -lSDL
 SRC		= \
-			main.c
+			main.c init.c misc.c
 OBJ		= $(SRC:.c=.o)
 SRCDIR	= ./src/
 OBJDIR	= ./obj/
