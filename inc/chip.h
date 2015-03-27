@@ -32,7 +32,8 @@ typedef struct		s_cpu
 	Uint8			mem[MEM_SIZE];
 	Uint8			v[16];
 	Uint16			vi;
-	Uint16			stack[16];
+	Uint16			stack[16]; // remplacer par liste
+	Uint8			stacklvl; //
 	Uint8			min_sys;
 	Uint8			min_son;
 	Uint16			mem_ptr;
@@ -71,9 +72,16 @@ typedef struct		s_opcode
 // ----- Prototypes
 void				init_all(t_win *win, t_cpu *cpu, t_opcode *op);
 
-// instructions1.c
+// instructions
 void				i_00E0_clear(t_win *win);
-void				i_1NNN_jump(t_cpu *cpu);
-void				i_3XNN_jmp(t_cpu *cpu, Uint8 x, Uint8 a2, Uint8 a3);
+void				i_1NNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_2NNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_00EE_jumpback(t_cpu *cpu);
+void				i_3XNN_jump(t_cpu *cpu, Uint8 x, Uint8 a2, Uint8 a3);
+void				i_8XY0_assign(t_cpu *cpu, Uint8 a3, Uint8 a2);
+void				i_CXNN_rand(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1);
+void				i_8XY4_add(t_cpu *cpu, Uint8 a3, Uint8 a2);
+void				i_8XY7_sub(t_cpu *cpu, Uint8 a3, Uint8 a2);
+void				i_FX33_stock(t_cpu *cpu, Uint8 a3);
 
 #endif

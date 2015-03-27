@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 00:31:55 by jripoute          #+#    #+#             */
-/*   Updated: 2015/03/27 03:15:34 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/03/27 16:53:04 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	init_cpu(t_cpu *cpu)
 	bzero(cpu->mem, MEM_SIZE);
 	bzero(cpu->v, 16);
 	bzero(cpu->stack, 16);
+	cpu->stacklvl = 0;
 	cpu->vi = 0;
 	cpu->min_sys = 0;
 	cpu->min_son = 0;

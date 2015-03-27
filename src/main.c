@@ -6,7 +6,7 @@
 /*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/26 23:14:59 by jripoute          #+#    #+#             */
-/*   Updated: 2015/03/27 03:55:01 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/03/27 17:13:02 by jripoute         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,42 @@ void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
 	a3 = ((opcode & 0x0F00) >> 8);
 	a2 = ((opcode & 0x00F0) >> 4);
 	a1 = ((opcode & 0x000F));
-
 	if (act == 0)
 		;
 	if (act == 1)
 		i_00E0_clear(win);
 	if (act == 2)
-		; // 1NNN
+		i_1NNN_jump(cpu, a1, a2, a3);
 	if (act == 3)
-		; // 2NNN
+		i_2NNN_jump(cpu, a2, a2, a3);
 	if (act == 4)
-		; // 00EE
+		i_00EE_jumpback(cpu);
 	if (act == 5)
 		i_3XNN_jmp(cpu, a3, a2, a1);
+	if (act == 6)
+		i_8XY0_assign(cpu);
+	if (act == 7)
+		i_CXNN_rand(cpu, a3, a2, a1);
+	if (act == 8)
+		i_8XY4_add(cpu, a3, a2);
+	if (act == 9)
+		i_8XY7_sub(cpu, a3, a2);
+	if (act == 10)
+		i_FX33_stock(cpu, a3);
+	if (act == 11)
+		;
+	if (act == 12)
+		;
+	if (act == 13)
+		;
+	if (act == 14)
+		;
+	if (act == 15)
+		;
+	if (act == 16)
+		;
+	if (act == 17)
+		;
 	if (act == 23)
 		i_DXYN_draw(cpu, win, a1, a2, a3);
 	cpu->mem_ptr += 2;
@@ -157,7 +180,7 @@ int		main(int ac, char **av)
 	t_win		win;
 	t_opcode	op;
 
-	Uint16 test = 0xF142;
+	Uint16 test = 0x1142;
 
 	Uint8 a1, a2, a3;
 
@@ -167,7 +190,8 @@ int		main(int ac, char **av)
 
 	Uint8 a4;
 
-	display_binary(test);
+	display_binary(0x142);
+	display_binary((a3 << 8) + (a2 << 4) + a1);
 
 	display_binary(a3);
 	display_binary(a2);
