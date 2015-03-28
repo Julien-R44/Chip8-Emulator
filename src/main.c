@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
+/*   By: so <so@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/26 23:14:59 by jripoute          #+#    #+#             */
-/*   Updated: 2015/03/27 17:13:02 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/03/29 00:49:49 by so               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,77 +74,75 @@ void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
 	a2 = ((opcode & 0x00F0) >> 4);
 	a1 = ((opcode & 0x000F));
 
-	printf("%d\n", act );
-
 	if (act == 0)
 		; // 0NNN
-	if (act == 1)
+	else if (act == 1)
 		i_00E0_clear(win);
-	if (act == 2)
+	else if (act == 2)
 		i_00EE_jumpback(cpu);
-	if (act == 3)
+	else if (act == 3)
 		i_1NNN_jump(cpu, a1, a2, a3);
-	if (act == 4)
+	else if (act == 4)
 		i_2NNN_jump(cpu, a1, a2, a3);
-	if (act == 5)
+	else if (act == 5)
 		i_3XNN_jump(cpu, a1, a2, a3);
-	if (act == 6)
+	else if (act == 6)
 		i_4XNN_jump(cpu, a1, a2, a3);
-	if (act == 7)
+	else if (act == 7)
 		i_5XY0_jump(cpu, a3, a2);
-	if (act == 8)
+	else if (act == 8)
 		i_6XNN_assign(cpu, a1, a2, a3);
-	if (act == 9)
+	else if (act == 9)
 		i_7XNN_add(cpu, a1, a2, a3);
-	if (act == 10)
+	else if (act == 10)
 		i_8XY0_assign(cpu, a2, a3);
-	if (act == 11)
+	else if (act == 11)
 		i_8XY1_assign(cpu, a2, a3);
-	if (act == 12)
+	else if (act == 12)
 		i_8XY2_assign(cpu, a2, a3);
-	if (act == 13)
+	else if (act == 13)
 		i_8XY3_assign(cpu, a2, a3);
-	if (act == 14)
+	else if (act == 14)
 		i_8XY4_add(cpu, a3, a2);
-	if (act == 15)
+	else if (act == 15)
 		i_8XY5_sub(cpu, a2, a3);
-	if (act == 16)
+	else if (act == 16)
 		i_8XY6_shift(cpu, a2, a3);
-	if (act == 17)
+	else if (act == 17)
 		i_8XY7_sub(cpu, a3, a2);
-	if (act == 18)
+	else if (act == 18)
 		i_8XYE_shift(cpu, a2, a3);
-	if (act == 19)
+	else if (act == 19)
 		i_9XY0_jump(cpu, a2, a3);
-	if (act == 20)
+	else if (act == 20)
 		i_ANNN_assign(cpu, a1, a2, a3);
-	if (act == 21)
+	else if (act == 21)
 		i_BNNN_jump(cpu, a1, a2, a3);
-	if (act == 22)
+	else if (act == 22)
 		i_CXNN_rand(cpu, a3, a2, a1);
-	if (act == 23)
+	else if (act == 23)
 		i_DXYN_draw(cpu, win, a1, a2, a3);
-	if (act == 24)
-		; // EX9E
-	if (act == 25)
-		; // EXA1
-	if (act == 26)
+	else if (act == 24)
+		i_EX9E_key(cpu, a3);
+	else if (act == 25)
+		i_EXA1_key(cpu, a3);
+	else if (act == 26)
 		i_FX07_assign(cpu, a3);
-	if (act == 27)
-		; // FX0A
-	if (act == 28)
+	else if (act == 27)
+		i_FX0A_key(cpu, a3);
+	else if (act == 28)
 		i_FX15_assign(cpu, a3);
-	if (act == 29)
+	else if (act == 29)
 		i_FX18_assign(cpu, a3);
-	if (act == 30)
+	else if (act == 30)
 		i_FX1E_add(cpu, a3);
-	if (act == 31)
+	else if (act == 31)
 		i_FX29_assign(cpu, a3);
-	if (act == 32)
+	else if (act == 32)
 		i_FX33_stock(cpu, a3);
-	if (act == 33)
+	else if (act == 33)
 		i_FX55_stock(cpu, a3);
-	if (act == 34)
+	else if (act == 34)
 		i_FX65_stock(cpu, a3);
 	cpu->mem_ptr += 2;
 }
@@ -155,6 +153,83 @@ void	countf(t_cpu *cpu)
 		cpu->min_sys--;
 	if (cpu->min_son > 0)
 		cpu->min_son--;
+}
+
+void	key_hook(t_cpu *cpu, SDL_Event event, int set)
+{
+	if (event.type == SDL_KEYDOWN)
+	{
+		set = 1;
+		if (event.key.keysym.sym == SDLK_1)
+			cpu->key[0] = set;
+		else if (event.key.keysym.sym == SDLK_2)
+			cpu->key[1] = set;
+		else if (event.key.keysym.sym == SDLK_3)
+			cpu->key[2] = set;
+		else if (event.key.keysym.sym == SDLK_4)
+			cpu->key[3] = set;
+		else if (event.key.keysym.sym == SDLK_a)
+			cpu->key[4] = set;
+		else if (event.key.keysym.sym == SDLK_z)
+			cpu->key[5] = set;
+		else if (event.key.keysym.sym == SDLK_e)
+			cpu->key[6] = set;
+		else if (event.key.keysym.sym == SDLK_r)
+			cpu->key[7] = set;
+		else if (event.key.keysym.sym == SDLK_q)
+			cpu->key[8] = set;
+		else if (event.key.keysym.sym == SDLK_s)
+			cpu->key[9] = set;
+		else if (event.key.keysym.sym == SDLK_d)
+			cpu->key[10] = set;
+		else if (event.key.keysym.sym == SDLK_f)
+			cpu->key[11] = set;
+		else if (event.key.keysym.sym == SDLK_w)
+			cpu->key[12] = set;
+		else if (event.key.keysym.sym == SDLK_x)
+			cpu->key[13] = set;
+		else if (event.key.keysym.sym == SDLK_c)
+			cpu->key[14] = set;
+		else if (event.key.keysym.sym == SDLK_v)
+			cpu->key[15] = set;
+	}
+	else if (event.type == SDL_KEYUP)
+	{
+		set = 0;
+		if (event.key.keysym.sym == SDLK_1)
+			cpu->key[0] = set;
+		else if (event.key.keysym.sym == SDLK_2)
+			cpu->key[1] = set;
+		else if (event.key.keysym.sym == SDLK_3)
+			cpu->key[2] = set;
+		else if (event.key.keysym.sym == SDLK_4)
+			cpu->key[3] = set;
+		else if (event.key.keysym.sym == SDLK_a)
+			cpu->key[4] = set;
+		else if (event.key.keysym.sym == SDLK_z)
+			cpu->key[5] = set;
+		else if (event.key.keysym.sym == SDLK_e)
+			cpu->key[6] = set;
+		else if (event.key.keysym.sym == SDLK_r)
+			cpu->key[7] = set;
+		else if (event.key.keysym.sym == SDLK_q)
+			cpu->key[8] = set;
+		else if (event.key.keysym.sym == SDLK_s)
+			cpu->key[9] = set;
+		else if (event.key.keysym.sym == SDLK_d)
+			cpu->key[10] = set;
+		else if (event.key.keysym.sym == SDLK_f)
+			cpu->key[11] = set;
+		else if (event.key.keysym.sym == SDLK_z)
+			cpu->key[12] = set;
+		else if (event.key.keysym.sym == SDLK_x)
+			cpu->key[13] = set;
+		else if (event.key.keysym.sym == SDLK_c)
+			cpu->key[14] = set;
+		else if (event.key.keysym.sym == SDLK_v)
+			cpu->key[15] = set;
+	}
+
 }
 
 void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
@@ -168,6 +243,7 @@ void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
 	{
 		SDL_PollEvent(&event);
 		skip = exit_hook(event);
+		key_hook(cpu, event, 1);
 		i = -1;
 		while (++i < CPU_SPEED)
 			interpret_opcode(cpu, op, win);

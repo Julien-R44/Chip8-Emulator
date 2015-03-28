@@ -39,6 +39,7 @@ typedef struct		s_cpu
 	Uint8			min_sys;
 	Uint8			min_son;
 	Uint16			mem_ptr;
+	Uint8			key[16];
 }					t_cpu;
 
 # define BLACK 0
@@ -73,6 +74,7 @@ typedef struct		s_opcode
 
 // ----- Prototypes
 void				init_all(t_win *win, t_cpu *cpu, t_opcode *op);
+void				key_hook(t_cpu *cpu, SDL_Event event, int set);
 
 // instructions
 void				i_00E0_clear(t_win *win);
@@ -98,7 +100,10 @@ void				i_ANNN_assign(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
 void				i_BNNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
 void				i_CXNN_rand(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1);
 void				i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h);
+void				i_EXA1_key(t_cpu *cpu, Uint8 a3);
+void				i_EX9E_key(t_cpu *cpu, Uint8 a3);
 void				i_FX07_assign(t_cpu *cpu, Uint8 a3);
+void				i_FX0A_key(t_cpu *cpu, Uint8 a3);
 void				i_FX15_assign(t_cpu *cpu, Uint8 a3);
 void				i_FX18_assign(t_cpu *cpu, Uint8 a3);
 void				i_FX1E_add(t_cpu *cpu, Uint8 a3);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instructions1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jripoute <jripoute@student.42.fr>          +#+  +:+       +#+        */
+/*   By: so <so@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 03:19:45 by jripoute          #+#    #+#             */
-/*   Updated: 2015/03/27 17:18:06 by jripoute         ###   ########.fr       */
+/*   Updated: 2015/03/29 00:47:25 by so               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,68 @@ void	i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 a1, Uint8 a2, Uint8 a3)
 	}
 }
 
+void	i_EXA1_key(t_cpu *cpu, Uint8 a3)
+{
+	if (cpu->key[cpu->v[a3]] == 0)
+		cpu->mem_ptr += 2;
+}
+
+void	i_EX9E_key(t_cpu *cpu, Uint8 a3)
+{
+	if (cpu->key[cpu->v[a3]] == 1)
+		cpu->mem_ptr += 2;
+}
+
 void	i_FX07_assign(t_cpu *cpu, Uint8 a3)
 {
 	cpu->v[a3] = cpu->min_sys;
+}
+
+void	i_FX0A_key(t_cpu *cpu, Uint8 a3)
+{
+	SDL_Event event;
+
+	while (42)
+	{
+		SDL_WaitEvent(&event);
+		if (exit_hook(event))
+			break ;
+	if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.sym == SDLK_1)
+		{ 	cpu->key[0] = 1; cpu->v[a3] = 0;}
+		else if (event.key.keysym.sym == SDLK_2)
+		{ 	cpu->key[1] = 1; cpu->v[a3] = 1;}
+		else if (event.key.keysym.sym == SDLK_3)
+		{ 	cpu->key[2] = 1; cpu->v[a3] = 2;}
+		else if (event.key.keysym.sym == SDLK_4)
+		{ 	cpu->key[3] = 1; cpu->v[a3] = 3;}
+		else if (event.key.keysym.sym == SDLK_a)
+		{ 	cpu->key[4] = 1; cpu->v[a3] = 4;}
+		else if (event.key.keysym.sym == SDLK_z)
+		{ 	cpu->key[5] = 1; cpu->v[a3] = 5;}
+		else if (event.key.keysym.sym == SDLK_e)
+		{ 	cpu->key[6] = 1; cpu->v[a3] = 6;}
+		else if (event.key.keysym.sym == SDLK_r)
+		{ 	cpu->key[7] = 1; cpu->v[a3] = 7;}
+		else if (event.key.keysym.sym == SDLK_q)
+		{ 	cpu->key[8] = 1; cpu->v[a3] = 8;}
+		else if (event.key.keysym.sym == SDLK_s)
+		{ 	cpu->key[9] = 1; cpu->v[a3] = 9;}
+		else if (event.key.keysym.sym == SDLK_d)
+		{ cpu->key[10] = 1; cpu->v[a3] = 10;}
+		else if (event.key.keysym.sym == SDLK_f)
+		{ cpu->key[11] = 1; cpu->v[a3] = 11;}
+		else if (event.key.keysym.sym == SDLK_w)
+		{ cpu->key[12] = 1; cpu->v[a3] = 12;}
+		else if (event.key.keysym.sym == SDLK_x)
+		{ cpu->key[13] = 1; cpu->v[a3] = 13;}
+		else if (event.key.keysym.sym == SDLK_c)
+		{ cpu->key[14] = 1; cpu->v[a3] = 14;}
+		else if (event.key.keysym.sym == SDLK_v)
+		{ cpu->key[15] = 1; cpu->v[a3] = 15;}
+	}
+	}
 }
 
 void	i_FX15_assign(t_cpu *cpu, Uint8 a3)
