@@ -16,6 +16,10 @@ void	ft_error(int er)
 {
 	if (er == SDL_INIT)
 		printf("SDL failed at init.\n");
+	else if (er == NOARGZ)
+		printf("./chip8 <game.ch8>\n");
+	else if (er == NOFILE)
+		printf("No such file.\n");
 	exit(-1);
 }
 

@@ -9,6 +9,8 @@
 typedef enum		s_er
 {
 	SDL_INIT,
+	NOARGZ,
+	NOFILE,
 }					t_er;
 
 typedef enum	s_bool
@@ -74,14 +76,35 @@ void				init_all(t_win *win, t_cpu *cpu, t_opcode *op);
 
 // instructions
 void				i_00E0_clear(t_win *win);
+void				i_00EE_jumpback(t_cpu *cpu);
 void				i_1NNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
 void				i_2NNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
-void				i_00EE_jumpback(t_cpu *cpu);
-void				i_3XNN_jump(t_cpu *cpu, Uint8 x, Uint8 a2, Uint8 a3);
+void				i_3XNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_4XNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_5XY0_jump(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_6XNN_assign(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1);
+void				i_7XNN_add(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
 void				i_8XY0_assign(t_cpu *cpu, Uint8 a3, Uint8 a2);
-void				i_CXNN_rand(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1);
+void				i_8XY1_assign(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_8XY2_assign(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_8XY3_assign(t_cpu *cpu, Uint8 a2, Uint8 a3);
 void				i_8XY4_add(t_cpu *cpu, Uint8 a3, Uint8 a2);
+void				i_8XY5_sub(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_8XY6_shift(t_cpu *cpu, Uint8 a2, Uint8 a3);
 void				i_8XY7_sub(t_cpu *cpu, Uint8 a3, Uint8 a2);
+void				i_8XYE_shift(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_9XY0_jump(t_cpu *cpu, Uint8 a2, Uint8 a3);
+void				i_ANNN_assign(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_BNNN_jump(t_cpu *cpu, Uint8 a1, Uint8 a2, Uint8 a3);
+void				i_CXNN_rand(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1);
+void				i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h);
+void				i_FX07_assign(t_cpu *cpu, Uint8 a3);
+void				i_FX15_assign(t_cpu *cpu, Uint8 a3);
+void				i_FX18_assign(t_cpu *cpu, Uint8 a3);
+void				i_FX1E_add(t_cpu *cpu, Uint8 a3);
+void				i_FX29_assign(t_cpu *cpu, Uint8 a3);
 void				i_FX33_stock(t_cpu *cpu, Uint8 a3);
+void				i_FX55_stock(t_cpu *cpu, Uint8 a3);
+void				i_FX65_stock(t_cpu *cpu, Uint8 a3);
 
 #endif
