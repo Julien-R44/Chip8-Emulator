@@ -50,7 +50,7 @@ Uint8	get_action(t_opcode *op, Uint16 opcode)
 			break ;
 		i++;
 	}
-	return (ret);
+	return (i);
 }
 
 int		exit_hook(SDL_Event event)
@@ -61,6 +61,40 @@ int		exit_hook(SDL_Event event)
 			return (1);
 	return (0);
 }
+
+void i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 b1, Uint8 b2, Uint8 b3) 
+{ 
+    Uint8 x=0,y=0,k=0,codage=0,j=0,decalage=0; 
+    
+    cpu->v[0xF]=0; 
+     for(k=0;k<b1;k++) 
+        { 
+            codage = cpu->mem[cpu->vi+k]; //on récupère le codage de la ligne à dessiner 
+
+            y=(cpu->v[b2]+k)%32; //on calcule l'ordonnée de la ligne à dessiner, on ne doit pas dépasser L 
+
+            for(j=0,decalage=7;j<8;j++,decalage--) 
+             { 
+                x=(cpu->v[b3]+j)%64; //on calcule l'abscisse, on ne doit pas dépasser l 
+
+                        if(((codage)&(0x1<<decalage))!=0) //on récupère le bit correspondant 
+                        {   //si c'est blanc 
+                            if( win->pixel[x][y].color== WHITE) //le pixel était  WHITE 
+                            { 
+                                win->pixel[x][y].color=BLACK; //on l'éteint 
+                                cpu->v[0xF]=1; //il y a donc collusion 
+                            } 
+                            else //sinon 
+                            { 
+                                 win->pixel[x][y].color= WHITE; //on l'allume 
+                            } 
+
+
+                        } 
+            } 
+        } 
+
+} 
 
 void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
 {
@@ -149,6 +183,13 @@ void	interpret_opcode(t_cpu *cpu, t_opcode *op, t_win *win)
 	cpu->mem_ptr += 2;
 }
 
+void	countf(t_cpu *cpu)
+{
+	if (cpu->min_sys > 0)
+		cpu->min_sys--;
+	if (cpu->min_son > 0)
+		cpu->min_son--;
+}
 
 void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
 {
@@ -165,6 +206,7 @@ void	hook(t_win *win, t_cpu *cpu, t_opcode *op)
 		while (++i < CPU_SPEED)
 			interpret_opcode(cpu, op, win);
 		display_screen(win);
+		countf(cpu);
 		SDL_Flip(win->win);
 		SDL_Delay(FPS);
 	}

@@ -17,6 +17,8 @@ void	i_00E0_clear(t_win *win)
 	int i;
 	int j;
 
+	exit(0);
+	printf("CLEEEEEEEEEEEEEEEQR\n");
 	i = 0;
 	while (i < PIX_WIDTH)
 	{
@@ -158,37 +160,37 @@ void	i_CXNN_rand(t_cpu *cpu, Uint8 a3, Uint8 a2, Uint8 a1)
 	cpu->v[a3] = (rand()) % ((a2 << 4) + a1 + 1);
 }
 
-void	i_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 x, Uint8 y, Uint8 h)
-{
-	Uint8	i = 0, j = 0, px = 0, py = 0, dec = 7;
-	Uint8	lign;
+// void	il_DXYN_draw(t_cpu *cpu, t_win *win, Uint8 a1, Uint8 a2, Uint8 a3)
+// {
+// 	Uint8	i = 0, j = 0, px = 0, py = 0, dec = 7;
+// 	Uint8	lign;
 
-	cpu->v[0xF] = 0; // carry flag
-	while (i < h)
-	{
-		lign = cpu->mem[cpu->vi + i];
-		py = (cpu->v[y] + i) % PIX_HEIGHT;
-		while (j < 8)
-		{
-			px = (cpu->v[x] + j) % PIX_WIDTH;
-			if ((lign >> dec) & 0x1)
-			{
-				if (win->pixel[px][py].color == WHITE)
-				{
-					win->pixel[px][py].color = BLACK;
-					cpu->v[0xF] = 1;
-				}
-				else
-					win->pixel[px][py].color = WHITE;
-			}
-			dec--;
-			j++;
-		}
-		dec = 7;
-		j = 0;
-		i++;
-	}
-}
+// 	cpu->v[0xF] = 0; // carry flag
+// 	while (i < h)
+// 	{
+// 		lign = cpu->mem[cpu->vi + i];
+// 		py = (cpu->v[y] + i) % PIX_HEIGHT;
+// 		while (j < 8)
+// 		{
+// 			px = (cpu->v[x] + j) % PIX_WIDTH;
+// 			if ((lign >> dec) & 0x1)
+// 			{
+// 				if (win->pixel[px][py].color == WHITE)
+// 				{
+// 					win->pixel[px][py].color = BLACK;
+// 					cpu->v[0xF] = 1;
+// 				}
+// 				else
+// 					win->pixel[px][py].color = WHITE;
+// 			}
+// 			dec--;
+// 			j++;
+// 		}
+// 		dec = 7;
+// 		j = 0;
+// 		i++;
+// 	}
+// }
 
 void	i_FX07_assign(t_cpu *cpu, Uint8 a3)
 {
